@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">TestMeli</string>
+    <string name="search_product">Buscar Producto</string>
+    <string name="title">title</string>
+    <string name="subtitle">subtitle</string>
+    <string name="string1">string1</string>
+    <string name="email">email</string>
+    <string name="phone">phone</string>
+    <string name="work">work</string>
+    <string name="buy_now">Comprar Ahora!</string>
+    <string name="state">Localidad</string>
+    <string name="city">Barrio</string>
+    <string name="quantity">Disponibles</string>
+    <string name="price">Precio</string>
+    <string name="condition">Estado</string>
+    <string name="congratulations">Felicidades por la compra!!</string>
+</resources>
