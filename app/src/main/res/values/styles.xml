@@ -7,4 +7,38 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="TextViewTitle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/layout_width</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/text_size_title</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+    
+    <style name="LinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/margin</item>
+        <item name="android:layout_marginEnd">@dimen/margin</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">2</item>
+    </style>
+
+    <style name="TextViewSubtitle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/layout_width</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:text">@string/string1</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/text_size_subtitle</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="button_style" parent="AppTheme">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

@@ -14,4 +14,8 @@
     <string name="price">Precio</string>
     <string name="condition">Estado</string>
     <string name="congratulations">Felicidades por la compra!!</string>
+    <string name="please_wait">Cargando...</string>
+    <string name="no_internet_connection">No tienes conexion a internet.</string>
+    <string name="seems_like_you">Parece que no tienes conexion</string>
+    <string name="try_again">Prueba de nuevo</string>
 </resources>

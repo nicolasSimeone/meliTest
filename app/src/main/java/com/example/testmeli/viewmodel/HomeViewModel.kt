@@ -16,9 +16,11 @@ class HomeViewModel(private val noticeRepository: ProductRepository) : ViewModel
 
 
 
-    fun getAllProducts(){
+    fun getAllProducts(param:String){
         viewModelScope.launch {
-            _product.value = noticeRepository.getProducts()
+            _product.value.let {
+                _product.value = noticeRepository.getProducts(param)
+            }
         }
     }
 }

@@ -6,27 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
-    <EditText
-        android:id="@+id/editText"
+
+    <RelativeLayout
+        android:id="@+id/relative_main"
+        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:hint="@string/search_product"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-    </EditText>
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:hint="@string/search_product"
+            android:singleLine="true">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/productsAll"
+        </EditText>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/productsAll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_margin="@dimen/margin">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <include
+            android:id="@+id/llProgressBar"
+            android:visibility="gone"
+            layout="@layout/layout_progress_bar"/>
+
+
+    </RelativeLayout>
+
+    <com.example.testmeli.view.NoConnectionView
+        android:id="@+id/no_internet_detail"
+        android:visibility="invisible"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText">
+        android:layout_height="match_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+    </com.example.testmeli.view.NoConnectionView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

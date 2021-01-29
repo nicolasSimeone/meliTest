@@ -1,17 +1,22 @@
 package com.example.testmeli.view
 
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.core.widget.addTextChangedListener
+import android.view.View
+import androidx.annotation.Nullable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testmeli.R
 import com.example.testmeli.models.Products
+import com.example.testmeli.utils.ConnectivityHelper
 import com.example.testmeli.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,13 +29,17 @@ class MainActivity : AppCompatActivity() {
 
     private var productList : MutableList<Products> = arrayListOf()
 
+    private var param : String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        checkConnectivity()
 
 
         adapterProduct = ProductListAdapter(this, productList)
 
+        llProgressBar.visibility = View.VISIBLE
 
         findViewById<RecyclerView>(R.id.productsAll).apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -59,16 +68,93 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        no_internet_detail.tryAgainAction = {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                val connectivity = ConnectivityHelper.getConnectionType(this)
+                if(connectivity == NetworkCapabilities.TRANSPORT_CELLULAR or NetworkCapabilities.TRANSPORT_WIFI){
+                    no_internet_detail.visibility = View.GONE
+                    relative_main.visibility = View.VISIBLE
+                    recreate()
+                }
+            }else{
+                val connetivity = ConnectivityHelper.getConnectionTypeSDK21(this)
+                if(connetivity == 0 or ConnectivityManager.TYPE_WIFI){
+                    no_internet_detail.visibility = View.GONE
+                    relative_main.visibility = View.VISIBLE
+                    recreate()
+                }
+            }
+        }
+
         viewModel.product.observe(this, Observer {
             productList = it.results
             adapterProduct.refreshList(productList)
+            llProgressBar.visibility = View.INVISIBLE
         })
 
-        viewModel.getAllProducts()
+        if(checkConnectivity()){
+            if(savedInstanceState == null){
+                viewModel.getAllProducts(ALL)
+            }
+        }
+
+
     }
 
     private fun filter(text :String){
-        val filteredList = productList.filter { s -> s.title!!.toLowerCase().contains(text.toLowerCase()) } as MutableList<Products>
-        adapterProduct.refreshList(filteredList)
+        if(checkConnectivity()){
+            if(text.isEmpty())
+            {
+                viewModel.getAllProducts(ALL)
+            }else{
+                viewModel.getAllProducts(text)
+            }
+        }
+    }
+
+    private fun checkConnectivity(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            when (ConnectivityHelper.getConnectionType(this)) {
+                NetworkCapabilities.TRANSPORT_WIFI -> {
+                    no_internet_detail.visibility = View.GONE
+                    relative_main.visibility = View.VISIBLE
+                    return true
+                }
+                NetworkCapabilities.TRANSPORT_CELLULAR -> {
+                    no_internet_detail.visibility = View.GONE
+                    relative_main.visibility = View.VISIBLE
+                    return true
+                }
+
+                else -> {
+                    no_internet_detail.visibility = View.VISIBLE
+                    relative_main.visibility = View.GONE
+                    return false
+                }
+            }
+        }else{
+            when (ConnectivityHelper.getConnectionTypeSDK21(this)) {
+                ConnectivityManager.TYPE_WIFI -> {
+                    no_internet_detail.visibility = View.GONE
+                    relative_main.visibility = View.VISIBLE
+                    return true
+                }
+                0 -> {
+                    no_internet_detail.visibility = View.GONE
+                    relative_main.visibility = View.VISIBLE
+                    return true
+                }
+
+                else -> {
+                    no_internet_detail.visibility = View.VISIBLE
+                    relative_main.visibility = View.GONE
+                    return false
+                }
+            }
+        }
+    }
+
+    companion object{
+        private const val ALL = "Todos"
     }
 }

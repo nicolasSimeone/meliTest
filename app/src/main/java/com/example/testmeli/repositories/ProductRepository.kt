@@ -7,9 +7,9 @@ import kotlinx.coroutines.withContext
 import com.example.testmeli.utils.Result
 
 class ProductRepository(private val remoteDataSource: ProductService) {
-    suspend fun getProducts(): Results = withContext(Dispatchers.IO)
+    suspend fun getProducts(param:String): Results = withContext(Dispatchers.IO)
     {
-        val result = remoteDataSource.getProducts()
+        val result = remoteDataSource.getProducts(param)
 
         when (result) {
             is Result.Success -> result.data

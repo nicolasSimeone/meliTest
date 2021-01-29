@@ -5,15 +5,20 @@ import com.example.testmeli.utils.Result
 
 class ProductService(private val api: ApiClient) {
 
-    suspend fun getProducts(): Result<Results> {
+    suspend fun getProducts(param:String): Result<Results> {
 
-        val response = api.getProductsList().await()
+        val response = api.getProductsList(param).await()
         val body = response.body()
         body?.let {
             return Result.Success(body)
         } ?: run {
+            val messageError = when(response.code()){
+                400 -> "bad request"
+                502 -> "bad gateway"
+                else -> "unexpected_error"
+            }
             return Result.Error(
-                Exception("error")
+                Exception(messageError)
             )
         }
     }
