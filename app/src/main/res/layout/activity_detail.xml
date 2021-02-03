@@ -7,7 +7,150 @@
     tools:context=".view.DetailActivity">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    
+        <include layout="@layout/custom_toolbar"
+            android:id="@+id/toolbar"/>
+
+        <FrameLayout
+            android:id="@+id/productImage"
+            android:layout_width="match_parent"
+            android:layout_height="379dp"
+            android:elevation="4dp"
+            android:visibility="visible"
+            android:background="@drawable/toolbar">
+            
+            <ImageView
+                android:id="@+id/imageDetail"
+                android:layout_width="300dp"
+                android:layout_height="238dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:background="@drawable/ic_search"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rating"
+            android:layout_below="@id/productImage"
+            android:background="#fff"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:visibility="visible">
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                android:layout_gravity="center"
+                android:isIndicator="false"/>
+
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/_500"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="26sp"
+                tools:ignore="RtlHardcoded" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            android:layout_below="@+id/rating"
+            android:background="#fff"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/title_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="@string/string1"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/string1"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/place"
+            android:layout_below="@+id/name"
+            android:background="#fff"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="@string/string1"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/string1"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn"
+            android:layout_below="@+id/place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buy_btn"
+                android:gravity="center"
+                android:text="@string/comprar"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_bg">
+
+            </Button>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
 
 </androidx.core.widget.NestedScrollView>

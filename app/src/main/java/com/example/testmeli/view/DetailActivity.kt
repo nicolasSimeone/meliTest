@@ -3,6 +3,7 @@ package com.example.testmeli.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.example.testmeli.R
 import com.example.testmeli.models.Products
@@ -17,6 +18,10 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         data = intent.getParcelableExtra("product")!!
 
@@ -40,16 +45,13 @@ class DetailActivity : AppCompatActivity() {
         }
 
         data.available_quantity.let {
-            quantity.text = it.toString()
+            quantity.text = "Disponibles: " + it.toString()
         }
 
         data.price.let {
             price.text = formatPrice(it.toString())
         }
 
-        data.condition.let {
-            condition.text = it
-        }
 
         buy_btn.setOnClickListener {
             Toast.makeText(applicationContext,getString(R.string.congratulations),Toast.LENGTH_SHORT).show()

@@ -20,4 +20,6 @@
     <string name="try_again">Prueba de nuevo</string>
     <string name="android_version">Android Version</string>
     <string name="android_name">Android Name</string>
+    <string name="_500">$500</string>
+    <string name="comprar">Comprar</string>
 </resources>
