@@ -18,4 +18,6 @@
     <string name="no_internet_connection">No tienes conexion a internet.</string>
     <string name="seems_like_you">Parece que no tienes conexion</string>
     <string name="try_again">Prueba de nuevo</string>
+    <string name="android_version">Android Version</string>
+    <string name="android_name">Android Name</string>
 </resources>

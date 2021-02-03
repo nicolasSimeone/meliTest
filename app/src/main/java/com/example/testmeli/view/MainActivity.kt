@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.annotation.Nullable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -56,17 +57,12 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
+        editText.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                filter(editText.text.toString())
             }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filter(s.toString())
-            }
-        })
+            false
+        }
 
         no_internet_detail.tryAgainAction = {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -103,10 +99,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun filter(text :String){
         if(checkConnectivity()){
-            if(text.isEmpty())
+            if(text.isNotEmpty())
             {
-                viewModel.getAllProducts(ALL)
-            }else{
                 viewModel.getAllProducts(text)
             }
         }
