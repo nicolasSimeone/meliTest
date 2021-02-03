@@ -6,32 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
-
     <RelativeLayout
         android:id="@+id/relative_main"
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <include layout="@layout/custom_toolbar"
+            android:id="@+id/toolbar"/>
+
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
             android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="@dimen/margin"
-            android:imeOptions="actionDone"
             android:hint="@string/search_product"
+            android:imeOptions="actionDone"
             android:singleLine="true">
 
         </EditText>
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productsAll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/editText"
-            android:layout_margin="12dp">
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 
