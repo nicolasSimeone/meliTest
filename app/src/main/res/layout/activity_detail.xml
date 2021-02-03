@@ -14,24 +14,24 @@
         <include layout="@layout/custom_toolbar"
             android:id="@+id/toolbar"/>
 
-        <FrameLayout
-            android:id="@+id/productImage"
-            android:layout_width="match_parent"
-            android:layout_height="379dp"
-            android:elevation="4dp"
-            android:visibility="visible"
-            android:background="@drawable/toolbar">
+       <LinearLayout
+           android:layout_below="@+id/toolbar"
+           android:id="@+id/productImage"
+           android:layout_marginTop="12dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
             
             <ImageView
                 android:id="@+id/imageDetail"
-                android:layout_width="300dp"
-                android:layout_height="238dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:background="@drawable/ic_search"/>
 
-        </FrameLayout>
+       </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
