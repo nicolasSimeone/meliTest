@@ -45,6 +45,7 @@ class ProductListAdapter(private val context: Context, private var productList: 
 
         Glide.with(this.context)
             .load(productList[position].thumbnail)
+            .placeholder(R.mipmap.ic_launcher)
             .into(holder.imgView)
     }
 

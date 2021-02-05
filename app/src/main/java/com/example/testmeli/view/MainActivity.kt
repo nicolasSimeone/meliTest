@@ -66,10 +66,10 @@ class MainActivity : AppCompatActivity() {
 
         editText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE){
-                filter(editText.text.toString())
                 llProgressBar.visibility = View.VISIBLE
                 editText.visibility = View.INVISIBLE
                 productsAll.visibility = View.INVISIBLE
+                filter(editText.text.toString())
             }
             false
         }
@@ -114,6 +114,12 @@ class MainActivity : AppCompatActivity() {
             if(text.isNotEmpty())
             {
                 viewModel.getAllProducts(text)
+            }
+            else{
+                editText.visibility = View.VISIBLE
+                productsAll.visibility = View.VISIBLE
+                llProgressBar.visibility = View.INVISIBLE
+                adapterProduct.refreshList(productList)
             }
         }
     }
