@@ -1,6 +1,8 @@
 package com.example.testmeli.view
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +10,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.testmeli.R
 import com.example.testmeli.models.Products
 import com.example.testmeli.utils.formatPrice
 import kotlinx.android.synthetic.main.list_item.view.*
+import java.lang.Exception
+import java.util.*
 
 class ProductListAdapter(private val context: Context, private var productList: MutableList<Products>): RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
 
@@ -46,6 +54,7 @@ class ProductListAdapter(private val context: Context, private var productList: 
         Glide.with(this.context)
             .load(productList[position].thumbnail)
             .placeholder(R.mipmap.ic_launcher)
+            .centerCrop()
             .into(holder.imgView)
     }
 
