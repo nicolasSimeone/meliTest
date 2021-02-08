@@ -80,14 +80,16 @@ class MainActivity : AppCompatActivity() {
                 if(connectivity == NetworkCapabilities.TRANSPORT_CELLULAR or NetworkCapabilities.TRANSPORT_WIFI){
                     no_internet_detail.visibility = View.GONE
                     relative_main.visibility = View.VISIBLE
-                    recreate()
+                    adapterProduct.refreshList(productList)
+                    llProgressBar.visibility = View.GONE
                 }
             }else{
                 val connetivity = ConnectivityHelper.getConnectionTypeSDK21(this)
                 if(connetivity == 0 or ConnectivityManager.TYPE_WIFI){
                     no_internet_detail.visibility = View.GONE
                     relative_main.visibility = View.VISIBLE
-                    recreate()
+                    adapterProduct.refreshList(productList)
+                    llProgressBar.visibility = View.GONE
                 }
             }
         }

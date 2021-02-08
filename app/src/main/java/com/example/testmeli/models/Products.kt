@@ -10,5 +10,7 @@ data class Products (
     val available_quantity:Int = 0,
     val condition:String? = "",
     val thumbnail:String? = "",
+    val shipping: Shipping = Shipping(),
+    val seller: Seller = Seller(),
     val address: Address = Address()
 ) : Parcelable
