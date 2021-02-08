@@ -82,6 +82,8 @@ class MainActivity : AppCompatActivity() {
                     relative_main.visibility = View.VISIBLE
                     adapterProduct.refreshList(productList)
                     llProgressBar.visibility = View.GONE
+                    editText.visibility = View.VISIBLE
+                    productsAll.visibility = View.VISIBLE
                 }
             }else{
                 val connetivity = ConnectivityHelper.getConnectionTypeSDK21(this)
@@ -90,6 +92,8 @@ class MainActivity : AppCompatActivity() {
                     relative_main.visibility = View.VISIBLE
                     adapterProduct.refreshList(productList)
                     llProgressBar.visibility = View.GONE
+                    editText.visibility = View.VISIBLE
+                    productsAll.visibility = View.VISIBLE
                 }
             }
         }
