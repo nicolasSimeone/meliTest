@@ -49,7 +49,7 @@ class ProductListAdapter(private val context: Context, private var productList: 
 
     override fun onBindViewHolder(holder: ProductListAdapter.ViewHolder, position: Int) {
         holder.txtTitle.text = productList[position].title
-        holder.txtSubtitle.text = formatPrice(productList[position].price.toString())
+        holder.txtSubtitle.text = formatPrice(productList[position].price.toInt().toString())
 
         Glide.with(this.context)
             .load(productList[position].thumbnail)

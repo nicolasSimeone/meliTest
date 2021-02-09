@@ -52,7 +52,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         data.price.let {
-            price.text = formatPrice(it.toString())
+            price.text = formatPrice( it.toInt().toString())
         }
 
         data.seller.let {
