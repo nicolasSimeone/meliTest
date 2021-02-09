@@ -10,16 +10,14 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val noticeRepository: ProductRepository) : ViewModel() {
     private val _product = MutableLiveData<Results>()
-    val product : LiveData<Results>
+    val product: LiveData<Results>
         get() = _product
 
 
-
-
-    fun getAllProducts(param:String){
+    fun getAllProducts(page: Int, param: String, limit: Int) {
         viewModelScope.launch {
             _product.value.let {
-                _product.value = noticeRepository.getProducts(param)
+                _product.value = noticeRepository.getProducts(page, param, limit)
             }
         }
     }

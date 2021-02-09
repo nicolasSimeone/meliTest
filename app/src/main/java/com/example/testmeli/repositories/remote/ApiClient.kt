@@ -9,5 +9,9 @@ import retrofit2.http.Query
 interface ApiClient {
 
     @GET("/sites/MLA/search")
-    fun getProductsList(@Query("q") param:String): Deferred<Response<Results>>
+    fun getProductsList(
+        @Query("offset") page: Int,
+        @Query("q") param: String,
+        @Query("limit") limit: Int
+    ): Deferred<Response<Results>>
 }

@@ -12,6 +12,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
 import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,9 +29,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var adapterProduct: ProductListAdapter
 
-    private var productList : MutableList<Products> = arrayListOf()
+    private var productList: MutableList<Products> = arrayListOf()
 
-    private var param : String = ""
+    private var param: String = ""
+
+    private var limit: Int = 10
+
+    private var page: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +57,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<RecyclerView>(R.id.productsAll).apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             layoutManager = LinearLayoutManager(context)
-            layoutManager = LinearLayoutManager (context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = adapterProduct
-            adapterProduct.onItemClick = {
-                    product ->
+            adapterProduct.onItemClick = { product ->
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 intent.putExtra("product", product)
                 startActivity(intent)
@@ -65,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         editText.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 llProgressBar.visibility = View.VISIBLE
                 editText.visibility = View.INVISIBLE
                 productsAll.visibility = View.INVISIBLE
@@ -75,25 +79,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         no_internet_detail.tryAgainAction = {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val connectivity = ConnectivityHelper.getConnectionType(this)
-                if(connectivity == NetworkCapabilities.TRANSPORT_CELLULAR or NetworkCapabilities.TRANSPORT_WIFI){
+                if (connectivity == NetworkCapabilities.TRANSPORT_CELLULAR or NetworkCapabilities.TRANSPORT_WIFI) {
                     no_internet_detail.visibility = View.GONE
-                    relative_main.visibility = View.VISIBLE
-                    adapterProduct.refreshList(productList)
-                    llProgressBar.visibility = View.GONE
+                    if (productList.isEmpty()) {
+                        viewModel.getAllProducts(page, ALL, limit)
+                        llProgressBar.visibility = View.VISIBLE
+                    } else {
+                        adapterProduct.refreshList(productList)
+                    }
                     editText.visibility = View.VISIBLE
-                    productsAll.visibility = View.VISIBLE
                 }
-            }else{
+            } else {
                 val connetivity = ConnectivityHelper.getConnectionTypeSDK21(this)
-                if(connetivity == 0 or ConnectivityManager.TYPE_WIFI){
+                if (connetivity == 0 or ConnectivityManager.TYPE_WIFI) {
                     no_internet_detail.visibility = View.GONE
-                    relative_main.visibility = View.VISIBLE
-                    adapterProduct.refreshList(productList)
-                    llProgressBar.visibility = View.GONE
+                    if (productList.isEmpty()) {
+                        viewModel.getAllProducts(page, ALL, limit)
+                    } else {
+                        adapterProduct.refreshList(productList)
+                    }
                     editText.visibility = View.VISIBLE
-                    productsAll.visibility = View.VISIBLE
                 }
             }
         }
@@ -101,27 +108,37 @@ class MainActivity : AppCompatActivity() {
         viewModel.product.observe(this, Observer {
             productList = it.results
             adapterProduct.refreshList(productList)
-            llProgressBar.visibility = View.INVISIBLE
+            llProgressBar.visibility = View.GONE
+            progress_bar.visibility = View.GONE
             editText.visibility = View.VISIBLE
             productsAll.visibility = View.VISIBLE
+            //no_internet_detail.visibility = View.GONE
         })
 
-        if(checkConnectivity()){
-            if(savedInstanceState == null){
-                viewModel.getAllProducts(ALL)
+        nested_scroll.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener
+            { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                    page += 10
+                    progress_bar.visibility = View.VISIBLE
+                    viewModel.getAllProducts(page, ALL, limit)
+                }
+            })
+
+        if (checkConnectivity()) {
+            if (savedInstanceState == null) {
+                viewModel.getAllProducts(page, ALL, limit)
             }
         }
 
 
     }
 
-    private fun filter(text :String){
-        if(checkConnectivity()){
-            if(text.isNotEmpty())
-            {
-                viewModel.getAllProducts(text)
-            }
-            else{
+    private fun filter(text: String) {
+        if (checkConnectivity()) {
+            if (text.isNotEmpty()) {
+                viewModel.getAllProducts(page, text, limit)
+            } else {
                 editText.visibility = View.VISIBLE
                 productsAll.visibility = View.VISIBLE
                 llProgressBar.visibility = View.INVISIBLE
@@ -135,44 +152,58 @@ class MainActivity : AppCompatActivity() {
             when (ConnectivityHelper.getConnectionType(this)) {
                 NetworkCapabilities.TRANSPORT_WIFI -> {
                     no_internet_detail.visibility = View.GONE
-                    relative_main.visibility = View.VISIBLE
+                    editText.visibility = View.VISIBLE
+                    productsAll.visibility = View.VISIBLE
                     return true
                 }
                 NetworkCapabilities.TRANSPORT_CELLULAR -> {
                     no_internet_detail.visibility = View.GONE
-                    relative_main.visibility = View.VISIBLE
+                    editText.visibility = View.VISIBLE
+                    productsAll.visibility = View.VISIBLE
                     return true
                 }
 
                 else -> {
                     no_internet_detail.visibility = View.VISIBLE
-                    relative_main.visibility = View.GONE
+                    editText.visibility = View.GONE
+                    productsAll.visibility = View.GONE
+                    progress_bar.visibility = View.GONE
+                    llProgressBar.visibility = View.GONE
                     return false
                 }
             }
-        }else{
+        } else {
             when (ConnectivityHelper.getConnectionTypeSDK21(this)) {
                 ConnectivityManager.TYPE_WIFI -> {
                     no_internet_detail.visibility = View.GONE
-                    relative_main.visibility = View.VISIBLE
+                    editText.visibility = View.VISIBLE
+                    productsAll.visibility = View.VISIBLE
+                    progress_bar.visibility = View.VISIBLE
+                    llProgressBar.visibility = View.VISIBLE
                     return true
                 }
                 0 -> {
                     no_internet_detail.visibility = View.GONE
-                    relative_main.visibility = View.VISIBLE
+                    editText.visibility = View.VISIBLE
+                    productsAll.visibility = View.VISIBLE
+                    progress_bar.visibility = View.VISIBLE
+                    llProgressBar.visibility = View.VISIBLE
                     return true
                 }
 
                 else -> {
                     no_internet_detail.visibility = View.VISIBLE
-                    relative_main.visibility = View.GONE
+                    editText.visibility = View.GONE
+                    productsAll.visibility = View.GONE
+                    progress_bar.visibility = View.GONE
+                    llProgressBar.visibility = View.GONE
                     return false
                 }
             }
         }
     }
 
-    companion object{
+    companion object {
         private const val ALL = "Todos"
     }
 }
